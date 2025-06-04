@@ -40,7 +40,10 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path("api/v1/users/", include(("users.urls", "users"), "users")),
+    path("api/v1/auth/", include(("users.urls", "users"), "users")),
+    path("api/v1/shop/", include(("products.urls", "products"), "products")),
+    path("api/v1/shop/", include(("profiles.urls", "profiles"), "profiles")),
+    path("api/v1/shop/", include(("reviews.urls", "reviews"), "reviews")),
 ]
 
 if django_settings_module == "development":
