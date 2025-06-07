@@ -36,7 +36,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path("default-admin-panel/", admin.site.urls),
+    path("admin/", admin.site.urls),
 ]
 
 urlpatterns += [
@@ -44,6 +44,8 @@ urlpatterns += [
     path("api/v1/shop/", include(("products.urls", "products"), "products")),
     path("api/v1/shop/", include(("profiles.urls", "profiles"), "profiles")),
     path("api/v1/shop/", include(("reviews.urls", "reviews"), "reviews")),
+    path("api/v1/shop/", include(("cart.urls", "cart"), "cart")),
+    path("api/v1/shop/", include(("orders.urls", "orders"), "orders"))
 ]
 
 if django_settings_module == "development":

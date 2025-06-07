@@ -13,6 +13,11 @@ from users.managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    class Role(models.TextChoices):
+        USER = "user", "User"
+        ADMIN = "admin", "Admin"
+
+    role = models.CharField(max_length=10, choices=Role.choices, default=Role.USER)
     guid = models.UUIDField(
         unique=True, default=uuid.uuid4, editable=False, db_index=True
     )

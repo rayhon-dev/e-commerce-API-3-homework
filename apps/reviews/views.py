@@ -1,9 +1,8 @@
 from rest_framework import generics, permissions
-
 from common.pagination import CustomPagination
 from .models import Review
 from .serializers import ReviewSerializer
-from apps.products.models import Product
+from products.models import Product
 from rest_framework.exceptions import ValidationError
 
 class ReviewCreateView(generics.CreateAPIView):
