@@ -16,8 +16,8 @@ class Product(BaseModel):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     thumbnail = models.ImageField(upload_to='product_thumbnails/')
     category =models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
-    average_rating =models.FloatField()
-    likes_count =models.PositiveIntegerField()
+    average_rating = models.FloatField(default=0.0)
+    likes_count =models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title

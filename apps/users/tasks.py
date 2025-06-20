@@ -1,5 +1,4 @@
 from common.utils.sms_mailing import SMSService
-
 from config.celery import app
 
 

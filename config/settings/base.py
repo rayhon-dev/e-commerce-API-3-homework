@@ -13,7 +13,7 @@ sys.path.append(os.path.join(BASE_DIR, "apps"))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-default-key-for-dev")
+SECRET_KEY = os.environ.get("SECRET_KEY", "IUGUIG@&(*GHBuihdb829827gvfb92)")
 
 # Application definition
 BASE_APPS = [
@@ -148,18 +148,26 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
 
 # Cache
-REDIS_HOST = os.environ.get("REDIS_HOST")
-REDIS_PORT = os.environ.get("REDIS_PORT")
+REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
+REDIS_PORT = os.environ.get("REDIS_PORT", "6379")
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             # "PASSWORD": os.environ.get("REDIS_PASSWORD"),
+#         },
+#     }
+# }
+
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            # "PASSWORD": os.environ.get("REDIS_PASSWORD"),
-        },
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
     }
 }
+
 
 # Django Rest Framework configurations
 REST_FRAMEWORK = {

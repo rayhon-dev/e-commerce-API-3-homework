@@ -1,9 +1,8 @@
 from rest_framework import generics, permissions
+from rest_framework.exceptions import NotFound
 from common.pagination import CustomPagination
-from .models import Review
 from .serializers import ReviewSerializer
 from products.models import Product
-from rest_framework.exceptions import ValidationError
 
 class ReviewCreateView(generics.CreateAPIView):
     serializer_class = ReviewSerializer
@@ -12,15 +11,9 @@ class ReviewCreateView(generics.CreateAPIView):
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        product = generics.get_object_or_404(Product, pk=self.kwargs['id'])
+        try:
+            product = Product.objects.get(id=self.kwargs['pk'])
+        except Product.DoesNotExist:
+            raise NotFound("Mahsulot topilmadi.")
         context['product'] = product
         return context
-
-    def perform_create(self, serializer):
-        product = generics.get_object_or_404(Product, pk=self.kwargs['id'])
-        user = self.request.user
-
-        if Review.objects.filter(user=user, product=product).exists():
-            raise ValidationError("Siz bu mahsulotga allaqachon sharh qoldirgansiz.")
-
-        serializer.save(user=user, product=product)

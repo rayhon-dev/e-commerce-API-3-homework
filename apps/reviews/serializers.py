@@ -21,5 +21,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        product = self.context['product']  # views ichidan uzatiladi
+        product = self.context['product']
         return Review.objects.create(user=user, product=product, **validated_data)
+
+    def validate(self, attrs):
+        user = self.context['request'].user
+        product = self.context['product']
+
+        if Review.objects.filter(user=user, product=product).exists():
+            raise serializers.ValidationError("Siz bu mahsulotga allaqachon izoh yozgansiz.")
+
+        return attrs

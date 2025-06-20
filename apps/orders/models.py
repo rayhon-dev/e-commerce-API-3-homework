@@ -3,6 +3,7 @@ from django.utils import timezone
 from common.models import BaseModel
 from users.models import User
 from products.models import Product
+import random
 
 
 def generate_order_number():
@@ -29,13 +30,19 @@ class Order(BaseModel):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     items_count = models.PositiveIntegerField(default=0)
+    shipping_address = models.TextField()
+    notes = models.TextField(blank=True, null=True)
+    shipping_fee = models.DecimalField(max_digits=10, decimal_places=2, default=5)
+    tracking_number = models.CharField(max_length=100, blank=True, null=True)
+
 
     def save(self, *args, **kwargs):
         if not self.order_number:
             self.order_number = generate_order_number()
 
-        self.total = sum(item.price * item.quantity for item in self.items.all())
-        self.items_count = sum(item.quantity for item in self.items.all())
+        if not self.tracking_number:
+            self.tracking_number = f"1Z{random.randint(10000000000000000000, 99999999999999999999)}"
+
         super().save(*args, **kwargs)
 
     def __str__(self):

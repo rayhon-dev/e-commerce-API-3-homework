@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from products.models import Product
+from decimal import Decimal
 
 
 class Cart(models.Model):
@@ -23,6 +24,9 @@ class CartItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.title}"
 
+
     def save(self, *args, **kwargs):
-        self.subtotal = self.product.price * self.quantity
+        self.quantity = int(self.quantity)
+        self.subtotal = self.product.price * Decimal(self.quantity)
         super().save(*args, **kwargs)
+
