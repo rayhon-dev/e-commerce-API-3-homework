@@ -2,9 +2,9 @@ from .base import *  # noqa
 
 ALLOWED_HOSTS = [
     "api.example.com",
-    "admin.example.com" "localhost",
+    "admin.example.com", "localhost",
     "127.0.0.1",
-    "server_ip_address",
+    "5.182.26.14"
 ]
 CSRF_TRUSTED_ORIGINS = ["https://api.example.com", "https://admin.example.com"]
 CORS_ALLOWED_ORIGINS = ["https://api.example.com", "https://admin.example.com"]
@@ -21,3 +21,11 @@ CORS_ORIGIN_ALLOW_ALL = False
 REST_FRAMEWORK.update(  # noqa: F405
     {"DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",)}
 )
+
+
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
