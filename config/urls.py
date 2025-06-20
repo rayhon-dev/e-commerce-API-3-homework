@@ -40,7 +40,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path("", home_view, "home"),
+    path("", home_view, name="home"),
     path("api/v1/auth/", include(("users.urls", "users"), "users")),
     path("api/v1/shop/", include(("products.urls", "products"), "products")),
     path("api/v1/shop/", include(("profiles.urls", "profiles"), "profiles")),
