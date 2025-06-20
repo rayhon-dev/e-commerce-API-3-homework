@@ -11,7 +11,7 @@
       "dest": "config/wsgi.py"
     }
   ],
-  "buildCommand": "pip install --use-pep517 -r requirements.txt",
+  "buildCommand": "pip install --use-pep517 -r requirements.txt && python manage.py collectstatic --noinput",
   "env": {
     "DJANGO_SETTINGS_MODULE": "config.settings.production"
   }

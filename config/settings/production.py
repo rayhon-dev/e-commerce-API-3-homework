@@ -6,8 +6,12 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "5.182.26.14"
 ]
-CSRF_TRUSTED_ORIGINS = ["https://3-project.midnight-pages.uz"]
-CORS_ALLOWED_ORIGINS = ["https://3-project.midnight-pages.uz"]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://3-project.midnight-pages.uz"
+]
+CORS_ALLOW_CREDENTIALS = True
+
 DEBUG = False
 CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 60 * 60 * 24 * 7 * 52  # one year
