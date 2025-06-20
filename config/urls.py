@@ -5,7 +5,7 @@ from drf_yasg import openapi
 from drf_yasg.generators import OpenAPISchemaGenerator
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-
+from common.views import home_view
 from config.settings import (
     base as settings,
     django_settings_module,
@@ -40,6 +40,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path("", home_view, "home"),
     path("api/v1/auth/", include(("users.urls", "users"), "users")),
     path("api/v1/shop/", include(("products.urls", "products"), "products")),
     path("api/v1/shop/", include(("profiles.urls", "profiles"), "profiles")),
