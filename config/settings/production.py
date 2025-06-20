@@ -1,13 +1,13 @@
 from .base import *  # noqa
 
 ALLOWED_HOSTS = [
-    "api.example.com",
-    "admin.example.com", "localhost",
+    "3-project.midnight-pages.uz",
+    "localhost",
     "127.0.0.1",
     "5.182.26.14"
 ]
-CSRF_TRUSTED_ORIGINS = ["https://api.example.com", "https://admin.example.com"]
-CORS_ALLOWED_ORIGINS = ["https://api.example.com", "https://admin.example.com"]
+CSRF_TRUSTED_ORIGINS = ["https://3-project.midnight-pages.uz"]
+CORS_ALLOWED_ORIGINS = ["https://3-project.midnight-pages.uz"]
 DEBUG = False
 CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 60 * 60 * 24 * 7 * 52  # one year
