@@ -1,6 +1,6 @@
 from .base import *  # noqa
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["3-project.midnight-pages.com", "5.182.26.14"]
 DEBUG = True
 CORS_ALLOW_ALL_ORIGINS = True
 
