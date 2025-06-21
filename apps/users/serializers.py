@@ -57,18 +57,31 @@ class VerifySerializer(serializers.Serializer):
         return attrs
 
 
+import logging
+from rest_framework.exceptions import AuthenticationFailed, ValidationError
+from django.contrib.auth import authenticate
+from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+logger = logging.getLogger(__name__)  # 1️⃣ Loggerni shu yerga qo‘shasiz
+
 class LoginSerializer(TokenObtainPairSerializer):
-    username_field = 'phone'  # bu kerakli joy
+    phone = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+    username_field = 'phone'
 
     def validate(self, attrs):
+        logger.info("Login validate called with: %s", attrs)  # 2️⃣ Loggerdan foydalanish
+
         phone = attrs.get("phone")
         password = attrs.get("password")
 
         if phone and password:
             user = authenticate(request=self.context.get("request"), phone=phone, password=password)
             if not user:
-                raise AuthenticationFailed({"message": "No active account found..."}, code="authorization")
-
+                raise AuthenticationFailed(
+                    {"message": "No active account found with the given credentials"}, code="authorization"
+                )
         else:
             raise ValidationError({"message": "Phone and password required"})
 
