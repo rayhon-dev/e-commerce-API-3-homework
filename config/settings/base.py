@@ -145,7 +145,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 AUTH_USER_MODEL = "users.User"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",
+                           "users.backends.PhoneBackend"
+                           )
 
 # Cache
 REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
@@ -195,3 +197,4 @@ SMS_API_URL = os.environ.get("SMS_API_URL")
 SMS_LOGIN = os.environ.get("SMS_LOGIN")
 SMS_PASSWORD = os.environ.get("SMS_PASSWORD")
 SMS_SENDER_ID = os.environ.get("SMS_SENDER_ID")
+

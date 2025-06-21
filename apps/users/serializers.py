@@ -5,6 +5,8 @@ from common.exceptions import (
     PhoneNumberNotFound,
     PhoneNumberNotVerified,
 )
+from django.contrib.auth import authenticate
+from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from common.validators import validate_phone
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
@@ -56,7 +58,27 @@ class VerifySerializer(serializers.Serializer):
 
 
 class LoginSerializer(TokenObtainPairSerializer):
-    pass
+    username_field = 'phone'  # bu kerakli joy
+
+    def validate(self, attrs):
+        phone = attrs.get("phone")
+        password = attrs.get("password")
+
+        if phone and password:
+            user = authenticate(request=self.context.get("request"), phone=phone, password=password)
+            if not user:
+                raise AuthenticationFailed(
+                    {"message": "No active account found with the given credentials"}, code="authorization"
+                )
+        else:
+            raise ValidationError({"message": "Phone and password required"})
+
+        refresh = self.get_token(user)
+
+        return {
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
+        }
 
 
 class LogoutSerializer(serializers.Serializer):
