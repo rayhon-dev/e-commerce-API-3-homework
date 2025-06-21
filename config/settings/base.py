@@ -145,9 +145,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 AUTH_USER_MODEL = "users.User"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",
-                           "users.backends.PhoneBackend"
-                           )
+AUTHENTICATION_BACKENDS = (
+    "users.backends.PhoneBackend",
+    "django.contrib.auth.backends.ModelBackend",
+)
+
 
 # Cache
 REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")

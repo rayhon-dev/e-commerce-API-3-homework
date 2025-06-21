@@ -67,9 +67,8 @@ class LoginSerializer(TokenObtainPairSerializer):
         if phone and password:
             user = authenticate(request=self.context.get("request"), phone=phone, password=password)
             if not user:
-                raise AuthenticationFailed(
-                    {"message": "No active account found with the given credentials"}, code="authorization"
-                )
+                raise AuthenticationFailed({"message": "No active account found..."}, code="authorization")
+
         else:
             raise ValidationError({"message": "Phone and password required"})
 
