@@ -5,13 +5,14 @@ from common.exceptions import (
     PhoneNumberNotFound,
     PhoneNumberNotVerified,
 )
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from common.validators import validate_phone
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
 
@@ -57,39 +58,40 @@ class VerifySerializer(serializers.Serializer):
         return attrs
 
 
-import logging
-from rest_framework.exceptions import AuthenticationFailed, ValidationError
-from django.contrib.auth import authenticate
-from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-logger = logging.getLogger(__name__)  # 1️⃣ Loggerni shu yerga qo‘shasiz
 
 class LoginSerializer(TokenObtainPairSerializer):
     phone = serializers.CharField()
     password = serializers.CharField(write_only=True)
-    username_field = 'phone'
 
     def validate(self, attrs):
-        logger.info("Login validate called with: %s", attrs)  # 2️⃣ Loggerdan foydalanish
-
         phone = attrs.get("phone")
         password = attrs.get("password")
 
-        if phone and password:
-            user = authenticate(request=self.context.get("request"), phone=phone, password=password)
-            if not user:
-                raise AuthenticationFailed(
-                    {"message": "No active account found with the given credentials"}, code="authorization"
-                )
-        else:
-            raise ValidationError({"message": "Phone and password required"})
+        if not phone or not password:
+            raise ValidationError({"message": "Phone and password are required"})
+
+        user = authenticate(
+            request=self.context.get("request"),
+            phone=phone,
+            password=password,
+        )
+
+        if not user:
+            raise AuthenticationFailed(
+                {"message": "No active account found with the given credentials"},
+                code="authorization"
+            )
 
         refresh = self.get_token(user)
 
         return {
             "refresh": str(refresh),
             "access": str(refresh.access_token),
+            "user": {
+                "guid": str(user.id),
+                "phone": user.phone,
+            },
         }
 
 
