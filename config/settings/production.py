@@ -2,6 +2,7 @@ from .base import *  # noqa
 
 ALLOWED_HOSTS = [
     "3-project.midnight-pages.uz",
+    ".vercel.app",
     "localhost",
     "127.0.0.1",
     "5.182.26.14"
