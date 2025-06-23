@@ -7,12 +7,16 @@
   ],
   "routes": [
     {
+      "src": "/static/(.*)",
+      "dest": "/staticfiles/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "config/wsgi.py"
     }
   ],
   "buildCommand": "pip install --use-pep517 -r requirements.txt && python manage.py collectstatic --noinput",
   "env": {
-    "DJANGO_SETTINGS_MODULE": "config.settings.development"
+    "DJANGO_SETTINGS_MODULE": "config.settings.production"
   }
 }
