@@ -17,6 +17,6 @@
   ],
   "buildCommand": "pip install --use-pep517 -r requirements.txt && python manage.py collectstatic --noinput",
   "env": {
-    "DJANGO_SETTINGS_MODULE": "config.settings.production"
+    "DJANGO_SETTINGS_MODULE": "config.settings.development"
   }
 }
