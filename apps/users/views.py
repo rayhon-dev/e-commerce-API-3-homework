@@ -9,6 +9,8 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import AllowAny
+
 
 from .response_schema import (
     AUTHORIZE_SCHEMA_RESPONSE,
@@ -72,10 +74,11 @@ class VerifyAPIView(generics.GenericAPIView):
         )
 
 
-@custom_response
+
+
 class LoginAPIView(TokenObtainPairView):
     serializer_class = LoginSerializer
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (AllowAny,)
 
     @swagger_auto_schema(responses=LOGIN_SCHEMA_RESPONSE)
     def post(self, request, *args, **kwargs):

@@ -60,7 +60,10 @@ class VerifySerializer(serializers.Serializer):
 
 
 
-class LoginSerializer(TokenObtainPairSerializer):
+
+
+
+class LoginSerializer(serializers.Serializer):
     phone = serializers.CharField()
     password = serializers.CharField(write_only=True)
 
@@ -68,31 +71,19 @@ class LoginSerializer(TokenObtainPairSerializer):
         phone = attrs.get("phone")
         password = attrs.get("password")
 
-        if not phone or not password:
-            raise ValidationError({"message": "Phone and password are required"})
+        try:
+            user = User.objects.get(phone=phone)
+        except User.DoesNotExist:
+            raise AuthenticationFailed("User not found")
 
-        user = authenticate(
-            request=self.context.get("request"),
-            phone=phone,
-            password=password,
-        )
+        user = authenticate(request=self.context.get('request'), phone=phone, password=password)
 
         if not user:
-            raise AuthenticationFailed(
-                {"message": "No active account found with the given credentials"},
-                code="authorization"
-            )
+            raise AuthenticationFailed("Incorrect credentials")
 
-        refresh = self.get_token(user)
+        attrs["user"] = user
+        return attrs
 
-        return {
-            "refresh": str(refresh),
-            "access": str(refresh.access_token),
-            "user": {
-                "guid": str(user.id),
-                "phone": user.phone,
-            },
-        }
 
 
 class LogoutSerializer(serializers.Serializer):
