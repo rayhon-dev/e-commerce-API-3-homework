@@ -22,9 +22,8 @@ class OrderSerializer(serializers.ModelSerializer):
     shipping_fee = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     total = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     tracking_number = serializers.CharField(read_only=True)
-
-    shipping_address = serializers.CharField(write_only=True, required=True)
-    notes = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    shipping_address = serializers.CharField(required=True)
+    notes = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = Order
