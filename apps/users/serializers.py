@@ -17,6 +17,12 @@ from rest_framework import serializers
 User = get_user_model()
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'guid', 'phone', 'full_name', 'role']
+
+
 class AuthorizeSerializer(serializers.Serializer):
     phone = serializers.CharField(validators=[validate_phone], min_length=12)
     password = serializers.CharField(write_only=True, min_length=8)
@@ -60,29 +66,13 @@ class VerifySerializer(serializers.Serializer):
 
 
 
-
-
-
-class LoginSerializer(serializers.Serializer):
-    phone = serializers.CharField()
-    password = serializers.CharField(write_only=True)
+class LoginSerializer(TokenObtainPairSerializer):
+    username_field = 'phone'
 
     def validate(self, attrs):
-        phone = attrs.get("phone")
-        password = attrs.get("password")
-
-        try:
-            user = User.objects.get(phone=phone)
-        except User.DoesNotExist:
-            raise AuthenticationFailed("User not found")
-
-        user = authenticate(request=self.context.get('request'), phone=phone, password=password)
-
-        if not user:
-            raise AuthenticationFailed("Incorrect credentials")
-
-        attrs["user"] = user
-        return attrs
+        data = super().validate(attrs)
+        data["user"] = UserSerializer(self.user).data
+        return data
 
 
 
