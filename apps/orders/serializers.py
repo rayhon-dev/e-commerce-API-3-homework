@@ -19,10 +19,12 @@ class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
     status = serializers.CharField(read_only=True)
     subtotal = serializers.SerializerMethodField()
-    shipping_fee = serializers.DecimalField(max_digits=10, decimal_places=2)
-    total = serializers.DecimalField(max_digits=10, decimal_places=2)
+    shipping_fee = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    total = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     tracking_number = serializers.CharField(read_only=True)
 
+    shipping_address = serializers.CharField(write_only=True, required=True)
+    notes = serializers.CharField(write_only=True, required=False, allow_blank=True)
 
     class Meta:
         model = Order

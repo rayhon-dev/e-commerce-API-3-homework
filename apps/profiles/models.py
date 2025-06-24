@@ -9,6 +9,6 @@ class UserProfile(BaseModel):
     name = models.CharField(max_length=100, blank=True)
     default_shipping_address = models.TextField(blank=True)
 
-    def __str__(self):
-        return self.name or self.user.username
 
+    def __str__(self):
+        return str(self.name or self.user.full_name or self.user.phone or f"Profile #{self.pk}")

@@ -14,3 +14,4 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
             return self.request.user.profile
         except Exception:
             raise NotFound("Foydalanuvchining profili mavjud emas")
+
